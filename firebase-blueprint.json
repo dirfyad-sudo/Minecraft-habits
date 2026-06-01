@@ -1,0 +1,164 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with level, experience points, current streaks, and custom settings",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "level": { "type": "integer" },
+        "xp": { "type": "integer" },
+        "streak": { "type": "integer" },
+        "lastActiveDate": { "type": "string" },
+        "customWidgets": { "type": "array" },
+        "avatar": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "level", "xp", "streak"]
+    },
+    "Habit": {
+      "title": "Habit",
+      "description": "Daily habit for tracking consistency",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "streak": { "type": "integer" },
+        "completedDates": { "type": "array" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "streak", "completedDates"]
+    },
+    "Todo": {
+      "title": "Todo",
+      "description": "To-do lists including subtasks, priorities, and smart AI steps",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "completed": { "type": "boolean" },
+        "priority": { "type": "string" },
+        "category": { "type": "string" },
+        "isSubtaskOf": { "type": "string" },
+        "subtasks": { "type": "array" },
+        "deadline": { "type": "string" },
+        "difficulty": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "completed", "priority"]
+    },
+    "Goal": {
+      "title": "Goal",
+      "description": "Daily, weekly, or monthly goals.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "type": { "type": "string" },
+        "completed": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "type", "completed"]
+    },
+    "Journal": {
+      "title": "Journal",
+      "description": "Daily reflections, diaries, and mood mapping",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "content": { "type": "string" },
+        "mood": { "type": "string" },
+        "reflection": { "type": "string" },
+        "date": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "content", "mood", "date"]
+    },
+    "HealthTracker": {
+      "title": "HealthTracker",
+      "description": "Sleep hours, water cups, and activities tracking",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "date": { "type": "string" },
+        "waterMl": { "type": "integer" },
+        "sleepHours": { "type": "number" },
+        "exerciseMinutes": { "type": "integer" },
+        "screenTimeMinutes": { "type": "integer" },
+        "eyeRestReminders": { "type": "integer" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "date", "waterMl", "sleepHours", "exerciseMinutes"]
+    },
+    "Roadmap": {
+      "title": "Roadmap",
+      "description": "AI-generated structures/roadmaps for tracking study topics",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "target": { "type": "string" },
+        "steps": { "type": "array" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "target", "steps"]
+    },
+    "Flashcard": {
+      "title": "Flashcard",
+      "description": "Spaced repetition flashcards for active recall study",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "deck": { "type": "string" },
+        "front": { "type": "string" },
+        "back": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "deck", "front", "back"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User custom status profile details"
+    },
+    "users/{userId}/habits/{habitId}": {
+      "schema": "Habit",
+      "description": "Habit items associated with the user"
+    },
+    "users/{userId}/todos/{todoId}": {
+      "schema": "Todo",
+      "description": "Task items associated with the user"
+    },
+    "users/{userId}/goals/{goalId}": {
+      "schema": "Goal",
+      "description": "Daily/weekly/monthly goals"
+    },
+    "users/{userId}/journals/{journalId}": {
+      "schema": "Journal",
+      "description": "Daily journal reflection diaries and mood tracking"
+    },
+    "users/{userId}/trackers/{trackerId}": {
+      "schema": "HealthTracker",
+      "description": "Health indicators (water, sleep, activities)"
+    },
+    "users/{userId}/roadmaps/{roadmapId}": {
+      "schema": "Roadmap",
+      "description": "AI created learning roadmaps and study structures"
+    },
+    "users/{userId}/flashcards/{flashcardId}": {
+      "schema": "Flashcard",
+      "description": "Study flashcards for spaced repetition"
+    }
+  }
+}

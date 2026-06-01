@@ -1,0 +1,77 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // User account mapping
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId)
+        && incoming().uid == userId
+        && incoming().email is string
+        && incoming().email.size() <= 256
+        && incoming().displayName is string
+        && incoming().displayName.size() <= 128
+        && incoming().level is int
+        && incoming().xp is int
+        && incoming().streak is int
+        && incoming().createdAt is string;
+
+      allow update: if isOwner(userId)
+        && incoming().uid == userId
+        && incoming().email == existing().email
+        && incoming().createdAt == existing().createdAt;
+
+      allow delete: if false;
+
+      // Subcollections rules
+      match /habits/{habitId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      match /todos/{todoId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      match /goals/{goalId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      match /journals/{journalId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      match /trackers/{trackerId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      match /roadmaps/{roadmapId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      match /flashcards/{flashcardId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+  }
+}
